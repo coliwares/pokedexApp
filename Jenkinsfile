@@ -3,6 +3,8 @@ pipeline {
         docker {
             image 'node:20-alpine'
             args '-p 4200:4200 -u root:root'
+            image 'hromedp/headless-shell:latest'
+            args '-u root:root'
         }
     }
     stages {
