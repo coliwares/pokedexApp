@@ -2,9 +2,10 @@ pipeline {
     agent any
 
     stages {
-        stage('Hello from Jenkinsfile') {
+        stage('Unit test') {
             steps {
-                echo 'Hello World from Jenkinsfile!'
+                echo 'Running unit test'
+                sh 'ng test --code-coverage --watch=false'
             }
         }
     }
