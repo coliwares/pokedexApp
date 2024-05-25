@@ -1,11 +1,12 @@
 pipeline {
-    agent {
-        docker {
-            image 'node:18'
-        }
-    }
     stages {
         stage('Install') {
+            agent {
+                docker {
+                    image 'node:18-alpine'
+                    args '-p 4200:4200'
+                }
+            }
             steps {
                 echo 'Installing dependencies'
                 sh 'npm install'
