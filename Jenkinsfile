@@ -1,7 +1,9 @@
 pipeline {
     agent {
         docker {
-            image 'roxsross12/node-chrome'
+            image 'node:20-alpine'
+            args '-p 4200:4200 -u root:root'
+            image 'justinribeiro/chrome-headless:dev'
             args '-u root:root'
         }
     }
