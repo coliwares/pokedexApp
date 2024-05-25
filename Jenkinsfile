@@ -5,14 +5,14 @@ pipeline {
             args '-p 4200:4200 -u root:root'
         }
     }
-    agent{
-        docker{
-            image 'selenium/standalone-chrome:nightly'
-            args '-u root:root'
-        }
-    }
     stages {
         stage('Install dependencies') {
+            agent {
+                docker {
+                    image 'selenium/standalone-chrome:nightly'
+                    args '-u root:root'
+                }
+            }
             steps {
                 echo 'Installing dependencies'
                 sh 'npm cache clean --force'
