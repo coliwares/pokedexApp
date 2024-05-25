@@ -3,7 +3,7 @@ pipeline {
         docker {
             image 'node:20-alpine'
             args '-p 4200:4200 -u root:root'
-            image 'justinribeiro/chrome-headless:dev'
+            image 'selenium/standalone-chrome:nightly'
             args '-u root:root'
         }
     }
