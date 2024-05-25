@@ -25,7 +25,7 @@ module.exports = function (config) {
       outputDir: './test-results',
       outputFile: 'unit-test-results.xml'
     },
-    reporters: ['progress', 'kjhtml', 'junit'],
+    reporters: ['progress', 'kjhtml', 'junit', 'coverage-istanbul'],
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
