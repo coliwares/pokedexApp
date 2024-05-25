@@ -3,7 +3,7 @@ pipeline {
         docker {
             image 'node:20-alpine'
             args '-p 4200:4200 -u root:root'
-            image 'hromedp/headless-shell:latest'
+            image 'roxsross12/node-chrome'
             args '-u root:root'
         }
     }
@@ -15,7 +15,7 @@ pipeline {
                 sh 'rm -rf node_modules package-lock.json'
                 sh 'npm install -g @angular/cli'
                 sh 'npm install --legacy-peer-deps'
-                sh 'ng test --code-coverage --watch=false --browsers=ChromeHeadless' 
+                sh 'ng test --code-coverage --watch=false --browsers=ChromeHeadless'
             }
         }
     }
