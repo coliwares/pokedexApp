@@ -6,14 +6,14 @@ pipeline {
         }
     }
     stages {
-        stage('Unit Test') {
+        stage('Install dependencies') {
             steps {
                 echo 'Installing dependencies'
                 sh 'npm cache clean --force'
                 sh 'rm -rf node_modules package-lock.json'
-                sh 'npm install --legacy-peer-deps --loglevel verbose'            }
-                echo 'Running unit test'
-                sh 'ng test --code-coverage --watch=false'
+                sh 'npm install --legacy-peer-deps --loglevel verbose'
+                sh 'ng test --code-coverage --watch=false '
+            }
         }
     }
 }
