@@ -1,7 +1,7 @@
 pipeline {
     agent {
         docker {
-            image 'node:20'
+            image 'node:20Alpine'
             args '-p 4200:4200'
         }
     }
@@ -9,7 +9,7 @@ pipeline {
         stage('Install dependencies') {
             steps {
                 echo 'Installing dependencies'
-                sh 'npm install'
+                sh 'npm i --legacy-peer-deps'
             }
         }
         stage('Unit test') {
