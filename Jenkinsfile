@@ -1,7 +1,7 @@
 pipeline {
     agent {
         docker {
-            image 'node:20-alpine'
+            image 'node:20'
             args '-p 4200:4200'
         }
     }
@@ -9,7 +9,6 @@ pipeline {
         stage('Install dependencies') {
             steps {
                 echo 'Installing dependencies'
-                sh 'npm config set cache /var/cache/npm --global'
                 sh 'npm install'
             }
         }
