@@ -9,8 +9,9 @@ pipeline {
         stage('Install dependencies') {
             steps {
                 echo 'Installing dependencies'
-                sh 'npm i --legacy-peer-deps'
-            }
+                sh 'npm cache clean --force'
+                sh 'rm -rf node_modules package-lock.json'
+                sh 'npm install --legacy-peer-deps --loglevel verbose'            }
         }
         stage('Unit test') {
             steps {
