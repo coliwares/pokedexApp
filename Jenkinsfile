@@ -9,7 +9,7 @@ pipeline {
         stage('Install dependencies') {
             steps {
                 echo 'Installing dependencies'
-                sh 'sudo mkdir -p /.npm/_logs'
+                sh 'npm config set cache /var/cache/npm --global'
                 sh 'npm install'
             }
         }
