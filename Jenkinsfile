@@ -1,7 +1,6 @@
 pipeline {
     agent {
         docker {
-            workingDir '/app'
             image 'node:18-alpine'
             args '-p 4200:4200'
         }
