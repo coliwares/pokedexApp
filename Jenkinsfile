@@ -11,7 +11,8 @@ pipeline {
                 echo 'Installing dependencies'
                 sh 'npm cache clean --force'
                 sh 'rm -rf node_modules package-lock.json'
-                sh 'npm install --legacy-peer-deps --loglevel verbose'
+                sh 'npm install -g @angular/cli'
+                sh 'npm install --legacy-peer-deps'
                 sh 'ng test --code-coverage --watch=false '
             }
         }
