@@ -1,4 +1,4 @@
-FROM node:20-alpine AS my-app-build
+FROM node:17-alpine AS my-app-build
 WORKDIR /app
 COPY . .
 RUN npm run build --prod
