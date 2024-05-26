@@ -1,7 +1,7 @@
-FROM node:17-alpine AS my-app-build
+FROM node:alpine AS my-app-build
 WORKDIR /app
 COPY . .
-RUN npm run build --prod
+RUN npm ci && npm run build --prod
 
 # stage 2
 
