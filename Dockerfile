@@ -7,5 +7,5 @@ RUN npm ci && npm run build --prod
 
 FROM nginx:alpine
 COPY nginx.conf /etc/nginx/nginx.conf
-COPY --from=my-app-build /app/dist/frontend /usr/share/nginx/html
+COPY --from=my-app-build /app/dist/pokedex-app /usr/share/nginx/html
 EXPOSE 80
