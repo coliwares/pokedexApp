@@ -1,26 +1,44 @@
 pipeline {
-    agent {
-        docker {
-            image 'node:20-alpine'
-            args '-p 4200:4200 -u root:root'
-        }
+    agent any
+
+    environment {
+        IMAGE_NAME = "pokedex-front-0:dev"  
+        CONTAINER_NAME = "pokedex-front-dev-0"
+        OUT_CONTAINER_PORT="61000"
+        IN_CONTAINER_PORT="80"      
     }
+
     stages {
-        stage('Install dependencies') {
-            agent {
-                docker {
-                    image 'selenium/standalone-chrome:nightly'
-                    args '-u root:root'
-                }
-            }
+        stage('Checkout'){
+            steps{
+                checkout scm
+            }            
+        }   
+        stage('Clean images not used'){
+            steps{
+                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+                    sh "docker images -a --no-trunc | grep 'none' | awk '{print \$3}' | xargs docker rmi"
+                    sh "docker rmi -f ${IMAGE_NAME}"
+                }                 
+            }            
+        }        
+        stage('Build Image') {
             steps {
-                echo 'Installing dependencies'
-                sh 'npm cache clean --force'
-                sh 'rm -rf node_modules package-lock.json'
-                sh 'npm install -g @angular/cli'
-                sh 'npm install --legacy-peer-deps'
-                sh 'ng test --code-coverage --watch=false --browsers=ChromeHeadless'
+                sh "docker build -t ${IMAGE_NAME} -f Dockerfile ."
             }
         }
-    }
+        stage('Stop Container') {
+            steps {
+                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+                    sh "docker stop ${CONTAINER_NAME}"
+                    sh "docker rm -f ${CONTAINER_NAME}"
+                }                
+            }
+        }
+        stage('Run Container'){
+            steps {
+                sh "docker run -t -d -i -p ${OUT_CONTAINER_PORT}:${IN_CONTAINER_PORT} --name ${CONTAINER_NAME} ${IMAGE_NAME} &"
+            }
+        }
+    }       
 }
