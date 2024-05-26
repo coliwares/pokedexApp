@@ -8,17 +8,27 @@ pipeline {
         IN_CONTAINER_PORT = '80'
     }
 
-
     stages {
         stage('Checkout') {
             steps {
                 checkout scm
             }
         }
-        stage('Run tests') {
-            steps {
+
+        docker.image('trion/ng-cli-karma').inside {
+            stage('load npm dependencies') {
+                echo 'Load npm dependencies'
                 sh 'npm install'
-                sh 'npm run test'
+            }
+            stage('build') {
+                echo 'building'
+                sh 'npm run build'
+            }
+            stage('unit test') {
+                sh 'ng test --progress false --watch false'
+                echo 'generate test report **/dist/test-reports/*.xml'
+                junit allowEmptyResults: false, testResults: '**/test-results.xml'
+                echo 'end test & coverage'
             }
         }
         stage('Clean images not used') {
