@@ -8,6 +8,12 @@ pipeline {
         IN_CONTAINER_PORT = '80'
     }
 
+    agent {
+        docker {
+            image 'node:17-alpine'
+        }
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -15,22 +21,21 @@ pipeline {
             }
         }
 
-        docker.image('trion/ng-cli-karma').inside {
-            stage('load npm dependencies') {
-                echo 'Load npm dependencies'
-                sh 'npm install'
-            }
-            stage('build') {
-                echo 'building'
-                sh 'npm run build'
-            }
-            stage('unit test') {
-                sh 'ng test --progress false --watch false'
-                echo 'generate test report **/dist/test-reports/*.xml'
-                junit allowEmptyResults: false, testResults: '**/test-results.xml'
-                echo 'end test & coverage'
-            }
+        stage('load npm dependencies') {
+            echo 'Load npm dependencies'
+            sh 'npm install'
         }
+        stage('build') {
+            echo 'building'
+            sh 'npm run build'
+        }
+        stage('unit test') {
+            sh 'ng test --progress false --watch false'
+            echo 'generate test report **/dist/test-reports/*.xml'
+            junit allowEmptyResults: false, testResults: '**/test-results.xml'
+            echo 'end test & coverage'
+        }
+
         stage('Clean images not used') {
             steps {
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
