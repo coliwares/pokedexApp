@@ -26,7 +26,7 @@ pipeline {
         }
         stage('Build Image') {
             steps {
-                sh "docker build  --no-cache-t ${IMAGE_NAME} -f Dockerfile ."
+                sh "docker build --no-cache -t ${IMAGE_NAME} -f Dockerfile ."
             }
         }
         stage('Stop Container') {
