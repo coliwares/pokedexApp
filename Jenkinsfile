@@ -12,7 +12,6 @@ pipeline {
         IN_CONTAINER_PORT = '80'
     }
 
-
     stages {
         stage('Checkout') {
             steps {
@@ -21,18 +20,24 @@ pipeline {
         }
 
         stage('load npm dependencies') {
-            echo 'Load npm dependencies'
-            sh 'npm install'
+            steps {
+                echo 'Load npm dependencies'
+                sh 'npm install'
+            }
         }
         stage('build') {
-            echo 'building'
-            sh 'npm run build'
+            steps {
+                echo 'building'
+                sh 'npm run build'
+            }
         }
         stage('unit test') {
-            sh 'ng test --progress false --watch false'
-            echo 'generate test report **/dist/test-reports/*.xml'
-            junit allowEmptyResults: false, testResults: '**/test-results.xml'
-            echo 'end test & coverage'
+            steps {
+                sh 'ng test --progress false --watch false'
+                echo 'generate test report **/dist/test-reports/*.xml'
+                junit allowEmptyResults: false, testResults: '**/test-results.xml'
+                echo 'end test & coverage'
+            }
         }
 
         stage('Clean images not used') {
