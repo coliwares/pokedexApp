@@ -1,7 +1,7 @@
 FROM node:alpine AS my-app-build
 WORKDIR /app
 COPY . .
-RUN run build pokedexApp
+RUN npm run build pokedexApp
 RUN ls -la /app/dist/pokedex-app
 
 # stage 2
