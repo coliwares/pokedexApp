@@ -8,6 +8,6 @@ RUN ls -la /app/dist/pokedex-app
 
 FROM nginx:alpine
 COPY nginx.conf /etc/nginx/nginx.conf
-RUN rm -rf /usr/share/nginx/html/index.html
+RUN rm /usr/share/nginx/html/index.html
 COPY --from=my-app-build /app/dist/pokedex-app /usr/share/nginx/html
 EXPOSE 80
