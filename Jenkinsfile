@@ -17,7 +17,7 @@ pipeline {
 
         stage('Clean images not used') {
             steps {
-                catchError(buildResult: 'SUCCESS', stageResult: 'WARNING') {
+                catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
                     sh "docker images -a --no-trunc | grep 'none' | awk '{print \$3}' | xargs docker rmi"
                     sh "docker rmi -f ${IMAGE_NAME}"
                 }
@@ -30,7 +30,7 @@ pipeline {
         }
         stage('Stop Container') {
             steps {
-                catchError(buildResult: 'SUCCESS', stageResult: 'WARNING') {
+                catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
                     sh "docker stop ${CONTAINER_NAME}"
                     sh "docker rm -f ${CONTAINER_NAME}"
                 }
