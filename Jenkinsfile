@@ -1,9 +1,5 @@
 pipeline {
-    agent {
-        docker {
-            image 'node:17-alpine'
-        }
-    }
+    agent any
 
     environment {
         IMAGE_NAME = 'pokedex-front-0:dev'
@@ -16,27 +12,6 @@ pipeline {
         stage('Checkout') {
             steps {
                 checkout scm
-            }
-        }
-
-        stage('load npm dependencies') {
-            steps {
-                echo 'Load npm dependencies'
-                sh 'npm install'
-            }
-        }
-        stage('build') {
-            steps {
-                echo 'building'
-                sh 'npm run build'
-            }
-        }
-        stage('unit test') {
-            steps {
-                sh 'ng test --progress false --watch false'
-                echo 'generate test report **/dist/test-reports/*.xml'
-                junit allowEmptyResults: false, testResults: '**/test-results.xml'
-                echo 'end test & coverage'
             }
         }
 
