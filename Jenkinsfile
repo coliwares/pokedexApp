@@ -17,7 +17,7 @@ pipeline {
 
         stage('Clean images not used') {
             steps {
-                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+                catchError(buildResult: 'SUCCESS', stageResult: 'WARNING') {
                     sh "docker images -a --no-trunc | grep 'none' | awk '{print \$3}' | xargs docker rmi"
                     sh "docker rmi -f ${IMAGE_NAME}"
                 }
@@ -30,7 +30,7 @@ pipeline {
         }
         stage('Stop Container') {
             steps {
-                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+                catchError(buildResult: 'SUCCESS', stageResult: 'WARNING') {
                     sh "docker stop ${CONTAINER_NAME}"
                     sh "docker rm -f ${CONTAINER_NAME}"
                 }
@@ -45,11 +45,11 @@ pipeline {
     post {
         failure {
             echo 'Failed'
-            slackSend channel: 'despliegues', color: 'danger', iconEmoji: ':pokeball:', message: 'La ejecucion ha fallado', tokenCredentialId: 'slack'
+            slackSend channel: 'despliegues', color: 'danger', iconEmoji: ':pokeball:', message: 'La ejecucion ${env.JOB_NAME} ha fallado, # ${env.BUILD_NUMBER ${env.BUILD_URL})', tokenCredentialId: 'slack'
         }
         fixed {
             echo 'Fixed'
-            slackSend channel: 'despliegues', color: 'good', iconEmoji: ':pokeball:', message: 'La ejecucion ha sido corregida', tokenCredentialId: 'slack'
+            slackSend channel: 'despliegues', color: 'good', iconEmoji: ':pokeball:', message: 'La ejecucion ${env.JOB_NAME} ha sido corregida, # ${env.BUILD_NUMBER ${env.BUILD_URL})', tokenCredentialId: 'slack'
         }
     }
 }
