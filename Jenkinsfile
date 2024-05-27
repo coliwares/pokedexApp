@@ -18,6 +18,7 @@ pipeline {
         stage('Clean images not used') {
             steps {
                 catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
+                    echo '---------------------Cleaning images not used----------------------'
                     sh "docker images -a --no-trunc | grep 'none' | awk '{print \$3}' | xargs docker rmi"
                     sh "docker rmi -f ${IMAGE_NAME}"
                 }
@@ -25,7 +26,7 @@ pipeline {
         }
         stage('Build Image') {
             steps {
-                sh "docker build  --no-cache -t ${IMAGE_NAME} -f Dockerfile ."
+                sh "docker build  --no-cache-t ${IMAGE_NAME} -f Dockerfile ."
             }
         }
         stage('Stop Container') {
