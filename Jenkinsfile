@@ -32,8 +32,10 @@ pipeline {
         stage('Stop Container') {
             steps {
                 catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
+                    echo '---------------------Cleaning conainer not used----------------------'
                     sh "docker stop ${CONTAINER_NAME}"
                     sh "docker rm -f ${CONTAINER_NAME}"
+                    echo '---------------------Cleaning conainer not used----------------------'
                 }
             }
         }
