@@ -1,5 +1,9 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'node:17-alpine'
+        }
+    }
 
     environment {
         IMAGE_NAME = 'pokedex-front-0:dev'
@@ -8,11 +12,6 @@ pipeline {
         IN_CONTAINER_PORT = '80'
     }
 
-    agent {
-        docker {
-            image 'node:17-alpine'
-        }
-    }
 
     stages {
         stage('Checkout') {
